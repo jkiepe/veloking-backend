@@ -1,0 +1,49 @@
+{
+	"equipment": {
+		"bike": {
+			"first_hour": 30,
+			"next_hour": 20,
+			"whole_day": 100,
+			"next_day": 120,
+		},
+		"gokart": {
+			"one_person": {
+				"half_hour": 30,
+				"whole_hour": 50,
+			},
+			"two_person": {
+				"half_hour": 50,
+				"whole_hour": 70,
+			},
+			"four_person": {
+				"half_hour": 70,
+				"whole_hour": 100,
+			},	
+		},
+		"trailer": {
+			"one_person": {
+				"first_hour": 30,
+				"next_hour": 20,
+				"whole_day": 100,
+				"next_day": 120,
+			},
+			"two_person": {
+				"first_hour": 40,
+				"next_hour": 30,
+				"whole_day": 110,
+				"next_day": 130,
+			},
+		},
+		"seat": {
+			"first_hour": 20,
+			"next_hour": 10,
+			"whole_day": 50,
+			"next_day": 70,
+		},
+		"helmet": {
+			"one_hour": 10,
+			"whole_day": 30,
+			"next_day": 50,
+		},
+	},
+}
