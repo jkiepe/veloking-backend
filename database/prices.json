@@ -4,20 +4,20 @@
 		"day": 75,
 		"firstHour": 18,
 		"hour": 15,
-		"p24hours": 85,
+		"p24hours": 85
 	},
 	"1":{
 		"category": "singleGokart",
 		"day": 200,
 		"halfHour": 15,
 		"hour": 20,
-		"p24hours": 250,
+		"p24hours": 250
 	},
 	"2":{
 		"category": "doubleGokart",
 		"day": 300,
 		"halfHour": 25,
 		"hour": 30,
-		"p24hours": 350,
-	},
+		"p24hours": 350
+	}
 }

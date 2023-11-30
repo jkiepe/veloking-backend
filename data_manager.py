@@ -1,5 +1,6 @@
-import pandas
+import json
 
 def read_data(name: str):
-    data = pandas.read_json(f"./database/{name}.json").to_json()
+    with open(f"./database/{name}.json", "r") as file:
+        data = json.loads(file.read())
     return data

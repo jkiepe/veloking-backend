@@ -4,20 +4,20 @@
 		"firstName": "Henrik",
 		"lastName": "Kiepe",
 		"rentalPoint": "sobieszewo",
-		"role": "manager",
+		"role": "manager"
 	},
 	"1":{
 		"email": "mbielinska@inkontor.com",
 		"firstName": "Marlena",
 		"lastName": "Bielinska",
 		"rentalPoint": "baza",
-		"role": "manager",
+		"role": "manager"
 	},
 	"2":{
 		"email": "jkiepe@inkontor.com",
 		"firstName": "Jonasz",
 		"lastName": "Kiepe",
 		"rentalPoint": "baza",
-		"role": "customAdvisor",
-	},
+		"role": "customAdvisor"
+	}
 }
