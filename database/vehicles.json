@@ -1,0 +1,34 @@
+{
+	"0":{
+		"categoryId": "mensBike",
+		"readyToUse": "true",
+		"rentalPoint": "sobieszewo",
+		"rented": "false",
+		"superiorCategory": "bike",
+		"vehicleId": "RWM-01",
+	},
+	"1":{
+		"categoryId": "ladiesBike",
+		"readyToUse": "true",
+		"rentalPoint": "sobieszewo",
+		"rented": "false",
+		"superiorCategory": "bike",
+		"vehicleId": "RD-30",
+	},
+	"2":{
+		"categoryId": "duoGokart",
+		"readyToUse": "true",
+		"rentalPoint": "sobieszewo",
+		"rented": "false",
+		"superiorCategory": "duoGokart",
+		"vehicleId": "G2-100",
+	},
+	"3":{
+		"categoryId": "singleGokartLarge",
+		"readyToUse": "true",
+		"rentalPoint": "sobieszewo",
+		"rented": "false",
+		"superiorCategory": "singleGokart",
+		"vehicleId": "G1D-200",
+	},
+}
