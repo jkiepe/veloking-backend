@@ -1,17 +1,16 @@
-from price_calculator import Rental, PriceCalculator
-from data_manager import read_data
 from fastapi import FastAPI
+from price_calculator import Rental, PriceCalculator
 
 app = FastAPI()
 
 
 @app.get("/data/{data_name}")
 async def send_data(data_name: str):
-    json_data = read_data(data_name)
-    return json_data
+    return "Work in progress."
 
 
-@app.post('/calc/price')
-async def price_calc(rental: Rental):
-    price_calculator = PriceCalculator(rental)
-    return price_calculator.total_price
+# @app.post('/calc/price')
+# async def price_calc(rental: Rental):
+#     price_calculator = PriceCalculator(rental)
+#     return price_calculator.total_price
+
