@@ -1,5 +1,5 @@
 import sys
-sys.path.append("database")
+sys.path.append("data")
 
 from datamanager import DataManager
 from fastapi import FastAPI
