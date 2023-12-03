@@ -4,6 +4,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped
 from sqlalchemy.orm import mapped_column
 
+URI = "postgresql://dr:Lucky786@localhost:5432/veloking"
+
 
 class Base(DeclarativeBase):
     pass
@@ -83,10 +85,9 @@ class TurnOver(Base):
     turnover: Mapped[str]
 
 
-uri = "sqlite+pysqlite:///velokingdb.db"
-def engine_creator():
-    eg = create_engine(uri, echo=True)
-    return eg
+def engine_creator(want_echo=False):
+    engine = create_engine(URI, echo=want_echo)
+    return engine
 
 engine = engine_creator()
 
