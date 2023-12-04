@@ -1,10 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from tables import Price, RentalPoint, Vehicle, User
-from tables import DefectVehicle, Rental, Staff, TurnOver
-from tables import engine_creator
-
-TABLES = [Price, RentalPoint, Vehicle, User, DefectVehicle, Rental, Staff, TurnOver]
+from tables import TABLES, engine_creator
 
 
 class DataManager():
@@ -12,19 +8,21 @@ class DataManager():
         self.engine = engine_creator()
 
     def get_json(self, tablename):
-        tablenames = [table.__tablename__ for table in TABLES]
-        if tablename in tablenames:
-            for table in TABLES:
-                if table.__tablename__ == tablename:
-                    chosen_table = table
-        else:
-            return "wrong table name"
+        try:
+            table = TABLES[tablename]
+        except:
+            return "incorrect table name"
 
         dictionary = {}
         with Session(self.engine) as session:
-            for item in session.query(chosen_table).all():
+            for item in session.query(table).all():
                 dictionary[item.__dict__["id"]] = item.__dict__
         return dictionary
+
+    def get_rental(self, id):
+        with Session(self.engine) as session:
+            rental = session.execute(select(TABLES["rentals"]).where(User.id == id)).scalar_one()
+        return rental
 
 # with Session(engine) as session:
 #     squidward = session.execute(select(User).filter_by(name="squidward")).scalar_one()
