@@ -51,6 +51,7 @@ class User(Base):
     lastName: Mapped[str]
     rentalPoint: Mapped[str]
     role: Mapped[str]
+    password: Mapped[str]
 
 
 class DefectVehicle(Base):

@@ -15,19 +15,24 @@ class UserLoginSchema(BaseModel):
 
 
 class UserSchema(BaseModel):
-    fullname: str = Field(...)
     email: EmailStr = Field(...)
+    firstName: str = Field(...)
+    lastName: str = Field(...)
+    rentalPoint: str = Field(...)
+    role: str = Field(...)
     password: str = Field(...)
 
     class Config:
         json_schema_extra = {
                 "example": {
-                    "fullname": "Jonasz Kiepe",
                     "email": "jkiepe@inkontor.com",
+                    "firstName": "Jonasz",
+                    "lastName": "Kiepe",
+                    "rentalPoint": "baza",
+                    "role": "manager",
                     "password": "pancake123",
                 }
         }
-
 
 
 class Rental(BaseModel):
@@ -45,4 +50,3 @@ class Rental(BaseModel):
                 "end_time": "some datetime",
             }
         }
-
