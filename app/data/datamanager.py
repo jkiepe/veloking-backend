@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from tables import TABLES, engine_creator
+from app.data.tables import TABLES, engine_creator
 
 
 class DataManager():

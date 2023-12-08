@@ -1,22 +1,4 @@
-import sys
-sys.path.append("data")
+import uvicorn
 
-from datamanager import DataManager
-from fastapi import FastAPI
-from pricecalculator import Rental, PriceCalculator
-
-app = FastAPI()
-data_manager = DataManager()
-
-
-@app.get("/data/{tablename}")
-async def send_data(tablename: str):
-    json = data_manager.get_json(tablename)
-    return json
-
-
-# @app.post('/calc/price')
-# async def price_calc(rental: Rental):
-#     price_calculator = PriceCalculator(rental)
-#     return price_calculator.total_price
-
+if __name__ == "__main__":
+    uvicorn.run("app.api:app", host="0.0.0.0", port=8081, reload=True)

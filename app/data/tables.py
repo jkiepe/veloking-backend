@@ -91,17 +91,16 @@ class Rental(Base):
     vehicles: Mapped[List["Equipment"]] = relationship(back_populates="rental")
 
 
-class Equipment(Base):
-    __tablename__ = "equipment"
+class Liability(Base):
+    __tablename__ = "liability"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     rentalId = mapped_column(ForeignKey("rentals.id"))
-    endDateTime = Mapped[str]
-    returned = Mapped[bool]
-    startDateTime = Mapped[str]
-    vehicleId = Mapped[str]
+    amount: Mapped[int]
+    rentailpoint: Mapped[str]
+    type: Mapped[str]
 
-    rental: Mapped[Rental] = relationship(back_populates="equipment")
+    rental: Mapped[Rental] = relationship(back_populates="liabilities")
 
 
 class Payment(Base):
@@ -117,16 +116,17 @@ class Payment(Base):
     rental: Mapped[Rental] = relationship(back_populates="payments")
 
 
-class Liabilty(Base):
-    __tablename__ = "liability"
+class Equipment(Base):
+    __tablename__ = "equipment"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     rentalId = mapped_column(ForeignKey("rentals.id"))
-    amount: Mapped[int]
-    rentailpoint: Mapped[str]
-    type: Mapped[str]
+    endDateTime = Mapped[str]
+    returned = Mapped[bool]
+    startDateTime = Mapped[str]
+    vehicleId = Mapped[str]
 
-    rental: Mapped[Rental] = relationship(back_populates="liabilities")
+    rental: Mapped[Rental] = relationship(back_populates="vehicles")
 
 
 class Staff(Base):

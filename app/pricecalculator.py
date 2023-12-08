@@ -1,14 +1,7 @@
 import math
 import pandas
 from datetime import datetime, timedelta
-from pydantic import BaseModel
-
-
-class Rental(BaseModel):
-    equipment: list
-    forward_payment: float
-    start_time: datetime
-    end_time: datetime
+from app.model import Rental
 
 # Messed up:
 class PriceCalculator():
