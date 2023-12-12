@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped
 from sqlalchemy.orm import mapped_column, relationship
 
-URI = "postgresql://dr:Lucky786@localhost:5432/veloking"
+from app.data.tables import engine_creator
 
 
 class Base(DeclarativeBase):
@@ -17,29 +17,22 @@ class Price(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     category: Mapped[str]
     day: Mapped[int]
-    firstHour: Mapped[int]
+    first_hour: Mapped[int]
     hour: Mapped[int]
     p24hours: Mapped[int]
 
 
 class RentalPoint(Base):
-    __tablename__ = "rentalpoints"
+    __tablename__ = "rental_points"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     key: Mapped[str]
     name: Mapped[str]
 
-
-class Vehicle(Base):
-    __tablename__ = "vehicles"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    categoryId: Mapped[str]
-    readyToUse: Mapped[str]
-    rentarlPoint: Mapped[str]
-    rented: Mapped[str]
-    superiorCategory: Mapped[str]
-    vehicleid: Mapped[str]
+    rentals: Mapped[List["Rental"]] = relationship(back_populates="rental_point")
+    users: Mapped[List["User"]] = relationship(back_populates="current_rental_point")
+    vehicles: Mapped[List["Vehicle"]] = relationship(back_populates="rental_point")
+    defect_vehicles: Mapped[List["DefectVehicle"]] = relationship(back_populates="rental_point")
 
 
 class User(Base):
@@ -47,48 +40,71 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str]
-    firstName: Mapped[str]
-    lastName: Mapped[str]
-    rentalPoint: Mapped[str]
-    role: Mapped[str]
+    first_name: Mapped[str]
+    full_name: Mapped[str]
     password: Mapped[str]
+    role: Mapped[str]
+
+    current_rental_point: Mapped[RentalPoint] = relationship(back_populates="user")
+
+
+class Vehicle(Base):
+    __tablename__ = "vehicles"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    rental_point_id = mapped_column(ForeignKey("rentals.id"))
+    ready_to_use: Mapped[bool]
+    rented: Mapped[bool]
+    superior_category: Mapped[str]
+    sub_category: Mapped[str]
+    vehicle_tag: Mapped[str]
+
+    fault: Mapped["DefectVehicle"] = relationship(back_populates="vehicle")
+    rental_point: Mapped[RentalPoint] = relationship(back_populates="vehicles")
 
 
 class DefectVehicle(Base):
-    __tablename__ = "defectvehicles"
+    __tablename__ = "defect_vehicles"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    rental_point_id = mapped_column(ForeignKey("rentals.id"))
+    vehicle_id = mapped_column(ForeignKey("vehicles.id"))
     date: Mapped[datetime]
-    rentalpoint: Mapped[str]
+    description: Mapped[str]
+
+    vehicle: Mapped[Vehicle] = relationship(back_populates="fault") 
+    rentalpoint: Mapped[RentalPoint] = relationship(back_populates="defect_vehicles")
 
 
 class Rental(Base):
     __tablename__ = "rentals"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    addressSelected: Mapped[bool]
-    country: Mapped[str]
-    countryCode: Mapped[str]
-    current: Mapped[int]
-    days: Mapped[int]
-    email: Mapped[str]
-    firstName: Mapped[str]
-    hours: Mapped[str]
-    idNumber: Mapped[str]
-    interval: Mapped[str]
-    lastName: Mapped[str]
-    liabilities: Mapped[List["Liability"]] = relationship(back_populates="rental")
-    liabilty: Mapped[float]
-    location: Mapped[str]
-    payments: Mapped[List["Payment"]] = relationship(back_populates="rental")
-    pesel: Mapped[str]
-    peselSelected: Mapped[bool]
     phone: Mapped[str]
     postcode: Mapped[str]
-    rentalpoint: Mapped[str]
+    lastName: Mapped[str]
+    firstName: Mapped[str]
+    pesel: Mapped[str]
+    peselSelected: Mapped[bool]
+    streetAndNumber: Mapped[str]
+    idNumber: Mapped[str]
+    addressSelected: Mapped[bool]
+    email: Mapped[str]
+    country: Mapped[str]
+    countryCode: Mapped[str]
+
+    current: Mapped[int]
+    days: Mapped[int]
+    hours: Mapped[str]
+    interval: Mapped[str]
+    liabilty: Mapped[float]
+    location: Mapped[str]
     rented: Mapped[bool]
     startRentalTime: Mapped[str]
-    streetAndNumber: Mapped[str]
+
+    rental_point: Mapped[RentalPoint] = relationship(back_populates="rentals")
+    payments: Mapped[List["Payment"]] = relationship(back_populates="rental")
+    liabilities: Mapped[List["Liability"]] = relationship(back_populates="rental")
     vehicles: Mapped[List["Equipment"]] = relationship(back_populates="rental")
 
 
@@ -130,14 +146,6 @@ class Equipment(Base):
     rental: Mapped[Rental] = relationship(back_populates="vehicles")
 
 
-class Staff(Base):
-    __tablename__ = "staff"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    firstName: Mapped[str]
-    lastName: Mapped[str]
-
-    
 class TurnOver(Base):
     __tablename__ = "turnover"
 
@@ -147,22 +155,6 @@ class TurnOver(Base):
     rentalpoint: Mapped[str]
     turnover: Mapped[str]
 
-
-def engine_creator(want_echo=False):
-    engine = create_engine(URI, echo=want_echo)
-    return engine
-
-
-TABLES = {
-    "prices": Price,
-    "rentalpoints": RentalPoint,
-    "vehicles": Vehicle,
-    "users": User,
-    "defectvehicles": DefectVehicle,
-    "rentals": Rental,
-    "staff": Staff,
-    "turnover": TurnOver,
-}
 
 engine = engine_creator()
 

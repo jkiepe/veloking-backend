@@ -35,8 +35,8 @@ async def retrieve_data(tablename: str):
     return data
 
 
-# @app.post('/calculate/price', tags=["calculation"])
-# async def calculate_price(rental: Rental):
-#     price_calculator = PriceCalculator(rental)
-#     return price_calculator.total_price
+@app.post('/calculate/price', tags=["calculation"])
+async def calculate_price(rental: Rental):
+    data = data_manager.add_rental(rental)
+    return data
 

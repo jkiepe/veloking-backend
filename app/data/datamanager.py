@@ -2,16 +2,38 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 
-from app.data.tables import TABLES, engine_creator
 from app.data.tables import Price, RentalPoint, Vehicle, User, DefectVehicle
 from app.data.tables import Rental, Staff, TurnOver
 
+URI = "postgresql://jonasz@localhost:5432/veloking"
+
+TABLES = {
+    "prices": Price,
+    "rentalpoints": RentalPoint,
+    "vehicles": Vehicle,
+    "users": User,
+    "defectvehicles": DefectVehicle,
+    "rentals": Rental,
+    "staff": Staff,
+    "turnover": TurnOver,
+}
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def engine_creator(want_echo=False):
+    engine = create_engine(URI, echo=want_echo)
+    return engine
+
 
 class DataManager():
     def __init__(self):
         self.engine = engine_creator()
+
+    def add_data(self, data):
+        with Session(self.engine) as session:
+            session.add(data)
+            session.commit()
 
     def get_data(self, tablename):
         try:
@@ -36,9 +58,11 @@ class DataManager():
     def add_user(self, user):
         user["password"] = password_context.hash(user["password"])
         new_user = User(**user)
-        with Session(self.engine) as session:
-            session.add(new_user)
-            session.commit()
+        self.add_data(new_user)
+
+    def add_rental(self, rental):
+        return rental
+        
 
 # def get_rental(self, id: int):
 #     with Session(self.engine) as session:
