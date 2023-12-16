@@ -7,7 +7,7 @@ class UserSchema(BaseModel):
     role: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
         json_schema_extra = {
             "example": {
@@ -16,15 +16,6 @@ class UserSchema(BaseModel):
                 "role": "admin",
             }
         }
-
-
-class RentalPointSchema(BaseModel):
-    key: str
-    name: str
-    users: list[UserSchema] = []
-
-    class Config:
-        orm_mode = True
 
 
 class UserLoginSchema(BaseModel):
@@ -38,3 +29,19 @@ class UserLoginSchema(BaseModel):
                 "password": "admin",
             }
         }
+
+
+class PointSchema(BaseModel):
+    key: str
+    name: str
+    users: list[UserSchema] = []
+
+    class Config:
+        from_attributes = True
+
+        json_schema_extra = {
+            "example": {
+                "key": "baza",
+                "name": "Baza",
+                }
+            }

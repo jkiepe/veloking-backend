@@ -22,21 +22,49 @@ def get_database():
 async def home() -> dict:
     return {"message": "Welcome to veloking API"}
 
+# , dependencies=[Depends(JWTBearer())]
 # USER
-@app.post("/user/create", tags=["user"], dependencies=[Depends(JWTBearer())])
-async def user_create(user: schemas.UserSchema, database: Session = Depends(get_database)):
-    if data.user_get_username(username=user.username, database=database):
+@app.post("/user/create", tags=["user"])
+async def user_create(user: schemas.UserSchema,
+                      database: Session = Depends(get_database)):
+    if data.user_get_by_username(user.username, database):
         raise HTTPException(status_code=400, detail="Username already registered")
     user.password = crypt.hash(user.password)
-    data.user_create(user=user, database=database)
+    data.user_create(user, database)
     return signJWT(user.username)
 
 
 @app.post("/user/login", tags=["user"])
-async def user_login(login_data: schemas.UserLoginSchema, database: Session = Depends(get_database)):
-    user = data.user_get_username(username=login_data.username, database=database)
+async def user_login(login_data: schemas.UserLoginSchema,
+                     database: Session = Depends(get_database)):
+    user = data.user_get_by_username(login_data.username, database)
     if user:
         if crypt.verify(login_data.password, user.password):
             return signJWT(user.username)
     raise HTTPException(status_code=400, detail="Incorrect login details")
+
+
+@app.put("/user/point", tags=["user"])
+async def user_move_to_point(username: str,
+                             key: str,
+                             database: Session = Depends(get_database)):
+    user = data.user_get_by_username(username, database)
+    point = data.point_get_by_key(point_key, database)
+    data.user_move_to_point(user, point, database)
+
+
+# POINT
+@app.get("/point/users", tags=["point"])
+async def point_get_users(key: str,
+                          database: Session = Depends(get_database)):
+    point = data.point_get_by_key(key, database)
+    return {user.username:user.role for user in point.users}
+
+
+@app.post("/point/create", tags=["point"])
+async def point_create(point: schemas.PointSchema,
+                       database: Session = Depends(get_database)):
+    if data.point_get_by_key(point.key, database):
+        raise HTTPException(status_code=400, detail="Point already registered")
+    data.point_create(point=point, database=database)
 

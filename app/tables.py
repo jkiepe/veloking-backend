@@ -5,7 +5,7 @@ from sqlalchemy.orm import mapped_column, relationship, Mapped
 from app.database import Table
 
 
-class RentalPoint(Table):
+class Point(Table):
     __tablename__ = "rental_points"
 
     key: Mapped[str]
@@ -29,7 +29,7 @@ class User(Table):
     id: Mapped[int] = mapped_column(primary_key=True)
     rental_point_id = mapped_column(ForeignKey("rental_points.id"))
 
-    current_rental_point: Mapped[RentalPoint] = relationship(back_populates="users")
+    current_rental_point: Mapped[Point] = relationship(back_populates="users")
     # rentals: Mapped[List["Rentals"]] = relationship(back_populates="user")
 
 
