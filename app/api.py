@@ -1,14 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app import tables, schemas, data, setup
-from app.database import SessionLocal, crypt
-from app.auth.auth_bearer import JWTBearer
-from app.auth.auth_handler import signJWT
+from . import tables, schemas, data, setup
+from .database import SessionLocal, crypt
+from .auth import auth_bearer, jwt_handler
 
 setup.setup_database()
-
 app = FastAPI()
+
 
 def get_database():
     database = SessionLocal()
@@ -22,8 +21,27 @@ def get_database():
 async def home() -> dict:
     return {"message": "Welcome to veloking API"}
 
-# , dependencies=[Depends(JWTBearer())]
+
 # USER
+@app.get("/user/me", tags=["user"])
+async def user_get_myself(token: str = Depends(auth_bearer.JWTBearer()),
+                          database: Session = Depends(get_database)):
+    payload = jwt_handler.decode(token)
+    username = payload["username"]
+    user = data.user_get_by_username(username, database)
+    return user
+
+
+@app.post("/user/login", tags=["user"])
+async def user_login(login_data: schemas.LoginSchema,
+                     database: Session = Depends(get_database)):
+    user = data.user_get_by_username(login_data.username, database)
+    if user:
+        if crypt.verify(login_data.password, user.password):
+            return jwt_handler.encode(user.username)
+    raise HTTPException(status_code=400, detail="Incorrect login details")
+
+
 @app.post("/user/create", tags=["user"])
 async def user_create(user: schemas.UserSchema,
                       database: Session = Depends(get_database)):
@@ -31,17 +49,6 @@ async def user_create(user: schemas.UserSchema,
         raise HTTPException(status_code=400, detail="Username already registered")
     user.password = crypt.hash(user.password)
     data.user_create(user, database)
-    return signJWT(user.username)
-
-
-@app.post("/user/login", tags=["user"])
-async def user_login(login_data: schemas.UserLoginSchema,
-                     database: Session = Depends(get_database)):
-    user = data.user_get_by_username(login_data.username, database)
-    if user:
-        if crypt.verify(login_data.password, user.password):
-            return signJWT(user.username)
-    raise HTTPException(status_code=400, detail="Incorrect login details")
 
 
 @app.put("/user/point", tags=["user"])
@@ -58,7 +65,14 @@ async def user_move_to_point(username: str,
 async def point_get_users(key: str,
                           database: Session = Depends(get_database)):
     point = data.point_get_by_key(key, database)
-    return {user.username:user.role for user in point.users}
+    return {
+        user.username:{
+            "username": user.username, 
+            "full_name":user.full_name, 
+            "role":user.role
+        }
+        for user in point.users
+    }
 
 
 @app.post("/point/create", tags=["point"])
@@ -68,3 +82,10 @@ async def point_create(point: schemas.PointSchema,
         raise HTTPException(status_code=400, detail="Point already registered")
     data.point_create(point=point, database=database)
 
+
+# RENTAL
+@app.post("/rental/create", tags=["rental"])
+async def rental_create(rental: schemas.RentalSchema,
+                        user: tables.User = Depends(user_get_myself),
+                        database: Session = Depends(get_database)):
+    data.rental_create(user, rental, database)

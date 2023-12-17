@@ -41,3 +41,12 @@ def point_create(point: schemas.PointSchema, database: Session):
 
 def point_get_by_key(key: str, database: Session):
     return database.query(tables.Point).filter(tables.Point.key == key).first()
+
+
+# RENTAL
+def rental_create(user: tables.User,
+                  rental: schemas.RentalSchema,
+                  database: Session):
+    new_rental = tables.Rental(**rental.dict(), user=user, rental_point = user.current_rental_point)
+    database.add(new_rental)
+    database.commit()

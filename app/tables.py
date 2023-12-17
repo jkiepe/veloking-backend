@@ -14,7 +14,7 @@ class Point(Table):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     users: Mapped[List["User"]] = relationship(back_populates="current_rental_point")
-    # rentals: Mapped[List["Rental"]] = relationship(back_populates="rental_point")
+    rentals: Mapped[List["Rental"]] = relationship(back_populates="rental_point")
     # vehicles: Mapped[Optional[List["Vehicle"]]] = relationship(back_populates="rental_point")
     # defect_vehicles: Mapped[Optional[List["DefectVehicle"]]] = relationship(back_populates="rental_point")
 
@@ -24,35 +24,35 @@ class User(Table):
 
     username: Mapped[str]
     password: Mapped[str]
+    full_name: Mapped[str]
     role: Mapped[str]
 
     id: Mapped[int] = mapped_column(primary_key=True)
     rental_point_id = mapped_column(ForeignKey("rental_points.id"))
 
     current_rental_point: Mapped[Point] = relationship(back_populates="users")
-    # rentals: Mapped[List["Rentals"]] = relationship(back_populates="user")
+    rentals: Mapped[List["Rental"]] = relationship(back_populates="user")
 
 
-# class Rental(Base):
-#     __tablename__ = "rentals"
+class Rental(Table):
+    __tablename__ = "rentals"
 
+    current: Mapped[int]
+    days: Mapped[int]
+    hours: Mapped[str]
+    interval: Mapped[str]
+    liability: Mapped[float]
+    rented: Mapped[bool]
+    start_time: Mapped[str]
 
-#     current: Mapped[int]
-#     days: Mapped[int]
-#     hours: Mapped[str]
-#     interval: Mapped[str]
-#     liabilty: Mapped[float]
-#     rented: Mapped[bool]
-#     start_time: Mapped[str]
+    id: Mapped[int] = mapped_column(primary_key=True)
+    rental_point_id = mapped_column(ForeignKey("rental_points.id"))
+    user_id = mapped_column(ForeignKey("users.id"))
+    # customer_id = mapped_column(ForeignKey("customers.id"))
 
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     customer_id = mapped_column(ForeignKey("customers.id"))
-#     rental_point_id = mapped_column(ForeignKey("rental_points.id"))
-#     user_id = mapped_column(ForeignKey("users.id"))
-
-#     user: Mapped[User] = relationship(back_populates="rentals")
-#     customer: Mapped[Customer] = relationship(back_populates="rentals")
-#     rental_point: Mapped[RentalPoint] = relationship(back_populates="rentals")
+    user: Mapped[User] = relationship(back_populates="rentals")
+    rental_point: Mapped[Point] = relationship(back_populates="rentals")
+    # customer: Mapped[Customer] = relationship(back_populates="rentals")
 #     payments: Mapped[List["Payment"]] = relationship(back_populates="rental")
 #     liabilities: Mapped[List["Liability"]] = relationship(back_populates="rental")
 #     vehicles: Mapped[List["Equipment"]] = relationship(back_populates="rental")
