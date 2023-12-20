@@ -23,10 +23,6 @@ admin = tables.User(
 
 waiting_room.users.append(admin)
 
-URI = "postgresql://jonasz@localhost:5432/veloking"
-engine = create_engine(URI)
-
-
 def setup_database():
     with Session(engine) as session:
         try:

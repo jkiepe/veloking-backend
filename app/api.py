@@ -5,7 +5,6 @@ from . import tables, schemas, data, setup
 from .database import SessionLocal, crypt
 from .auth import auth_bearer, jwt_handler
 
-setup.setup_database()
 app = FastAPI()
 
 
@@ -16,6 +15,7 @@ def get_database():
     finally:
         database.close()
 
+setup.setup_database()
 
 @app.get("/", tags=["home"])
 async def home() -> dict:
