@@ -2,8 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from passlib.context import CryptContext
+from decouple import config
 
-URL = f"postgresql://jonasz@localhost:5432/veloking"
+USER = config("user")
+PASSWORD = config("password")
+DATABASE = config("database")
+PORT = config("port")
+HOST = config("host")
+URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
 
 engine = create_engine(
     URL

@@ -30,7 +30,7 @@ class RentalSchema(BaseModel):
 class UserSchema(BaseModel):
     username: str
     password: str
-    full_name: str
+    fullname: str
     role: str
     
     rentals: list[RentalSchema] = []
@@ -41,6 +41,7 @@ class UserSchema(BaseModel):
         json_schema_extra = {
             "example": {
                 "username": "admin",
+                "fullname": "adminadmin",
                 "password": "admin",
                 "role": "admin",
             }

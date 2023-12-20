@@ -1,4 +1,4 @@
-from typing import List 
+from typing import List, Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, relationship, Mapped
 
@@ -24,7 +24,8 @@ class User(Table):
 
     username: Mapped[str]
     password: Mapped[str]
-    full_name: Mapped[str]
+    fullname: Mapped[str]
+    disabled: Mapped[bool]
     role: Mapped[str]
 
     id: Mapped[int] = mapped_column(primary_key=True)

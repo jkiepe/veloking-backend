@@ -16,7 +16,8 @@ waiting_room = tables.Point(
 admin = tables.User(
     username = "admin",
     password = crypt.hash("admin"),
-    full_name = "adminadmin",
+    fullname = "adminadmin",
+    disabled = False,
     role = "admin",
 )
 
