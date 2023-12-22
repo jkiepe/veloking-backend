@@ -9,6 +9,7 @@ PASSWORD = config("password")
 DATABASE = config("database")
 PORT = config("port")
 HOST = config("host")
+
 URL = f"postgresql+psycopg2://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}"
 
 engine = create_engine(
