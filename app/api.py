@@ -11,7 +11,8 @@ app = FastAPI()
 origins = [
     # "https://3000-hkiepe-velokingapp-tefiy8arryq.ws-eu107.gitpod.io",
     # "http://localhost:3000",
-    "https://skywalker.inkontor.com"
+    # "https://skywalker.inkontor.com"
+    "*"
 ]
 
 app.add_middleware(
