@@ -9,9 +9,6 @@ from .auth import auth_bearer, jwt_handler
 app = FastAPI()
 
 origins = [
-    # "https://3000-hkiepe-velokingapp-tefiy8arryq.ws-eu107.gitpod.io",
-    # "http://localhost:3000",
-    # "https://skywalker.inkontor.com"
     "*"
 ]
 
