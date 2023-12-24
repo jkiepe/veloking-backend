@@ -71,13 +71,13 @@ async def user_get_myself(token: str = Depends(auth_bearer.JWTBearer()),
     return user
 
 
-# @app.put("/user/point", tags=["user"])
-# async def user_move_to_point(username: str,
-#                              key: str,
-#                              database: Session = Depends(get_database)):
-#     user = data.user_get_by_username(username, database)
-#     point = data.point_get_by_key(point_key, database)
-#     data.user_move_to_point(user, point, database)
+@app.put("/user/point", tags=["user"])
+async def user_move_to_point(username: str,
+                             key: str,
+                             database: Session = Depends(get_database)):
+    user = data.user_get_by_username(username, database)
+    point = data.point_get_by_key(point_key, database)
+    data.user_move_to_point(user, point, database)
 
 
 # @app.get("/point/users", tags=["point"])
