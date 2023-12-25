@@ -2,10 +2,6 @@
     "points": 
     [
         {
-            "key": "unassigned",
-            "name": "No point assigned"
-        },
-        {
             "key": "office",
             "name": "Office"
         },

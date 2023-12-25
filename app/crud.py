@@ -1,11 +1,20 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
-from app import tables, schemas
+from app.database import crypt
+from app.models import tables, schemas
+
+
+def verify(password, hash_password):
+    return crypt.verify(password, hash_password)
 
 
 def user_create(user: schemas.UserSchema, database: Session):
-    user = tables.User(**user.dict(), disabled=True, rental_point_id=1)
+    disabled = True
+    if user.role == "admin":
+        disabled = False
+    user.password = crypt.hash(user.password)
+    user = tables.User(**user.dict(), disabled=disabled)
     database.add(user)
     database.commit()
 

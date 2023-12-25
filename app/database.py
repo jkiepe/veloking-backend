@@ -2,11 +2,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from passlib.context import CryptContext
 from decouple import config
-import pandas as pd
+import pandas
 
-from . import tables
+from app import crud
+from app.models import tables, schemas
 
-TABLES = ["points"]
+TABLES = ["points", "users"]
 USER = config("user")
 PASSWORD = config("password")
 DATABASE = config("database")
@@ -21,7 +22,7 @@ crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_json(table):
     json = f"app/constants/{table}.json"
-    df = pd.read_json(json)
+    df = pandas.read_json(json)
     data_dict = df.to_dict()
     return data_dict
 
@@ -34,7 +35,16 @@ def setup():
             data = get_json(table)
             for (number, item) in data[table].items():
                 if table == "points":
-                    db.add(tables.Point(key = item["key"], name = item["name"]))
-        db.commit()
+                    point = schemas.PointSchema(key = item["key"], name = item["name"])
+                    crud.point_create(point, db)
+
+                if table == "users":
+                    user = schemas.UserSchema(
+                        username = item["username"],
+                        password = item["password"],
+                        fullname = item["fullname"],
+                        role = item["role"]
+                    )
+                    crud.user_create(user, db)
     db.close()
 
