@@ -106,9 +106,11 @@ async def point_create(point: schemas.PointSchema,
 @app.get("/point/list", tags=["point"])
 async def point_list(database: Session = Depends(get_database)):
     points = data.point_get_all(database)
-    points = [{"key": point.key,
-               "name": point.name,
-               } for point in points]
+    points = [{
+        "id": point.id,
+        "key": point.key,
+       "name": point.name,
+       } for point in points]
     return {"points": points}
 
 
