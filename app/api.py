@@ -9,6 +9,7 @@ from app.auth import auth_bearer, jwt_handler
 
 database.setup()
 
+
 def get_db():
     db = database.SessionLocal()
     try:
@@ -16,7 +17,6 @@ def get_db():
     finally:
         db.close()
 
-database: Annotated[Session, Depends(get_db)]
 
 app = FastAPI()
 app.add_middleware(
@@ -26,6 +26,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/", tags=["home"])
 async def home():
