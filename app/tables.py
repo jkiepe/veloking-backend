@@ -1,9 +1,9 @@
 from typing import List, Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, relationship, Mapped
+from sqlalchemy.ext.declarative import declarative_base
 
-from app.database import Table
-
+Table = declarative_base()
 
 class Point(Table):
     __tablename__ = "rental_points"

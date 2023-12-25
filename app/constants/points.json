@@ -1,0 +1,29 @@
+{
+    "points": 
+    [
+        {
+            "key": "unassigned",
+            "name": "No point assigned"
+        },
+        {
+            "key": "office",
+            "name": "Office"
+        },
+        {
+            "key": "workshop",
+            "name": "Workshop"
+        },
+        {
+            "key": "piastowska",
+            "name": "Piastowska"
+        },
+        {
+            "key": "chinese_hotel",
+            "name": "Chinese Hotel"
+        },
+        {
+            "key": "grand_hotel",
+            "name": "Grand Hotel"
+        }
+    ]
+}

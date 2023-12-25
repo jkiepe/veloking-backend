@@ -1,16 +1,12 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from passlib.context import CryptContext
 
 from app import tables, schemas
 
-crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 def user_create(user: schemas.UserSchema, database: Session):
-    user.password = crypt.hash(user.password)
-    new_user = tables.User(**user.dict(),disabled=True, rental_point_id=1)
-    database.add(new_user)
+    user = tables.User(**user.dict(), disabled=True, rental_point_id=1)
+    database.add(user)
     database.commit()
 
 

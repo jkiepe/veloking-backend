@@ -1,5 +1,5 @@
-from decouple import config
 import uvicorn
+from decouple import config
 
 HOST = str(config("apihost"))
 PORT = int(config("apiport"))
