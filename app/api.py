@@ -94,7 +94,6 @@ async def point_create(point: schemas.PointSchema,
 async def point_list(db: Session = Depends(get_db)):
     points = crud.point_get_all(db)
     points = [{
-        "id": point.id,
         "key": point.key,
        "name": point.name,
        } for point in points]
@@ -115,9 +114,15 @@ async def vehicle_list(db: Session = Depends(get_db)):
         "sub_category": vehicle.sub_category,
         "tag": vehicle.tag,
         "rented": vehicle.rented,
+        "rental_point": vehicle.rental_point.key
         } for vehicle in vehicles]
     return {"vehicles": vehicles}
 
+
+@app.get("/vehicle/move", tags=["vehicle"])
+async def vehicle_move(tag: str, key: str, db: Session = Depends(get_db)):
+    crud.vehicle_move(tag, key, db)
+    
 
 # @app.post("/rental/create", tags=["rental"])
 # async def rental_create(rental: schemas.RentalSchema,

@@ -54,7 +54,8 @@ def point_get_by_key(key: str, database: Session):
 
 def vehicle_create(vehicle: schemas.VehicleSchema,
                    database: Session):
-    new_vehicle = tables.Vehicle(**vehicle.dict())
+    office = database.query(tables.Point).filter(tables.Point.key == "office").first()
+    new_vehicle = tables.Vehicle(**vehicle.dict(), rental_point=office)
     database.add(new_vehicle)
     database.commit()
 
@@ -63,9 +64,14 @@ def vehicle_get_by_tag(tag: str, database: Session):
     return database.query(tables.Vehicle).filter(tables.Vehicle.tag == tag).first()
 
 
-# def vehicle_move(vehicle: tables.Vehicle,
-#                  point: tables.Point,
-#                  db: Session):
+def vehicle_move(tag: str,
+                 key: str,
+                 database: Session):
+    vehicle = vehicle_get_by_tag(tag, database)
+    point = point_get_by_key(key, database)
+    vehicle.rental_point = point
+    database.add(vehicle)
+    database.commit()
 
 
 def vehicle_get_all(database: Session):
