@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class LoginSchema(BaseModel):
@@ -14,52 +15,54 @@ class LoginSchema(BaseModel):
         }
 
 
-class RentalSchema(BaseModel):
-    current: int
-    days: int
-    hours: str
-    interval: int
-    liability: float
-    rented: bool
-    start_time: str
-
-    class Config:
-        from_attributes = True
+class VehicleSchema(BaseModel):
+    rented: bool = False
+    superior_category: str
+    sub_category: str
+    tag: str
 
 
 class UserSchema(BaseModel):
     username: str
     password: str
     fullname: str
+    disabled: bool = True
     role: str
-    
-    rentals: list[RentalSchema] = []
 
     class Config:
         from_attributes = True
-
-        json_schema_extra = {
-            "example": {
-                "username": "admin",
-                "fullname": "adminadmin",
-                "password": "admin",
-                "role": "admin",
-            }
-        }
 
 
 class PointSchema(BaseModel):
     key: str
     name: str
     users: list[UserSchema] = []
-    rentals: list[RentalSchema] = []
+    vehicles: list[VehicleSchema] = []
 
     class Config:
         from_attributes = True
 
-        json_schema_extra = {
-            "example": {
-                "key": "baza",
-                "name": "Baza",
-                }
-            }
+
+class PriceSchema(BaseModel):
+    category: str | list
+    day: int
+    first_hour: Optional[int] = None
+    half_hour: Optional[int] = None
+    hour: int
+    per_24_hours: int
+
+    class Config:
+        from_attributes = True
+
+
+class PrepaymentSchema(BaseModel):
+    tags: list
+    day: Optional[bool]
+    first_hour: Optional[bool]
+    half_hour: Optional[bool]
+    hour: Optional[int]
+    per_24_hours: Optional[int]
+
+    class Config:
+        from_attributes = True
+

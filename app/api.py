@@ -40,7 +40,7 @@ async def user_login(login_data: schemas.LoginSchema,
     if user:
         if user.disabled:
             raise HTTPException(status_code=400, detail="User is disabled")
-        if database.verify(login_data.password, user.password):
+        if database.user_verify(login_data.password, user.password):
             return jwt_handler.encode(user.username)
     raise HTTPException(status_code=400, detail="Incorrect login details")
 
@@ -77,19 +77,9 @@ async def user_move_to_point(username: str,
     point = crud.point_get_by_key(point_key, db)
     crud.user_move_to_point(user, point, db)
 
-
-# @app.get("/point/users", tags=["point"])
-# async def point_get_users(key: str,
-#                           db: Session = Depends(get_db)):
-#     point = data.point_get_by_key(key, db)
-#     return {
-#         user.username:{
-#             "username": user.username, 
-#             "fullname":user.fullname, 
-#             "role":user.role
-#         }
-#         for user in point.users
-#     }
+@app.put("/price/create", tags=["price"])
+async def price_create(price: schemas.PriceSchema, db: Session = Depends(get_db)):
+    crud.price_create(price, db)
 
 
 @app.post("/point/create", tags=["point"])
@@ -111,9 +101,27 @@ async def point_list(db: Session = Depends(get_db)):
     return {"points": points}
 
 
-@app.post("/rental/create", tags=["rental"])
-async def rental_create(rental: schemas.RentalSchema,
-                        user: tables.User = Depends(user_get_myself),
-                        db: Session = Depends(get_db)):
-    crud.rental_create(user, rental, db)
+@app.post("/rental/prepayment", tags=["rental"])
+async def rental_calculate_prepayment(prepayment: schemas.PrepaymentSchema,
+                                      db: Session = Depends(get_db)):
+    return crud.rental_calculate_price(prepayment, db)
 
+
+@app.get("/vehicle/list", tags=["vehicle"])
+async def vehicle_list(db: Session = Depends(get_db)):
+    vehicles = crud.vehicle_get_all(db)
+    vehicles = [{
+        "superior_category": vehicle.superior_category,
+        "sub_category": vehicle.sub_category,
+        "tag": vehicle.tag,
+        "rented": vehicle.rented,
+        } for vehicle in vehicles]
+    return {"vehicles": vehicles}
+
+
+# @app.post("/rental/create", tags=["rental"])
+# async def rental_create(rental: schemas.RentalSchema,
+#                         user: tables.User = Depends(user_get_myself),
+#                         db: Session = Depends(get_db)):
+#     crud.rental_create(user, rental, db)
+#

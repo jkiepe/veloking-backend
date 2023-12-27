@@ -7,7 +7,7 @@ import pandas
 from app import crud
 from app.models import tables, schemas
 
-TABLES = ["points", "users"]
+TABLES = ["points", "users", "prices", "vehicles"]
 USER = config("user")
 PASSWORD = config("password")
 DATABASE = config("database")
@@ -43,8 +43,35 @@ def setup():
                         username = item["username"],
                         password = item["password"],
                         fullname = item["fullname"],
-                        role = item["role"]
+                    role = item["role"]
                     )
                     crud.user_create(user, db)
+
+                if table == "prices":
+                    if item["category"] == "bike":
+                        price = schemas.PriceSchema(
+                            category = item["category"],
+                            day = item["day"],
+                            first_hour = item["first_hour"],
+                            hour = item["hour"],
+                            per_24_hours = item["per_24_hours"],
+                        )
+                    else:
+                        price = schemas.PriceSchema(
+                            category = item["category"],
+                            day = item["day"],
+                            half_hour = item["half_hour"],
+                            hour = item["hour"],
+                            per_24_hours = item["per_24_hours"],
+                        )
+                    crud.price_create(price, db)
+                if table == "vehicles":
+                    vehicle = schemas.VehicleSchema(
+                            superior_category = item["superior_category"],
+                            sub_category = item["sub_category"],
+                            tag = item["tag"],
+                        )
+                    crud.vehicle_create(vehicle, db)
+
     db.close()
 

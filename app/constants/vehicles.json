@@ -1,0 +1,26 @@
+
+{
+    "vehicles": 
+    [
+        {
+            "superior_category": "bike",
+            "sub_category": "adult-female-bike",
+            "tag": "FB-01",
+        },
+        {
+            "superior_category": "bike",
+            "sub_category": "adult-male-bike",
+            "tag": "MB-01",
+        },
+        {
+            "superior_category": "gokart",
+            "sub_category": "adult-single-gokart",
+            "tag": "SG-01",
+        },
+        {
+            "superior_category": "gokart",
+            "sub_category": "adult-double-gokart",
+            "tag": "DG-01",
+        }
+    ]
+}
