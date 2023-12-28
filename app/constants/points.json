@@ -2,23 +2,23 @@
     "points": 
     [
         {
-            "key": "office",
+            "point_key": "office",
             "name": "Office"
         },
         {
-            "key": "workshop",
+            "point_key": "workshop",
             "name": "Workshop"
         },
         {
-            "key": "piastowska",
+            "point_key": "piastowska",
             "name": "Piastowska"
         },
         {
-            "key": "chinese_hotel",
+            "point_key": "chinese_hotel",
             "name": "Chinese Hotel"
         },
         {
-            "key": "grand_hotel",
+            "point_key": "grand_hotel",
             "name": "Grand Hotel"
         }
     ]

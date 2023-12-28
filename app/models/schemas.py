@@ -19,7 +19,7 @@ class VehicleSchema(BaseModel):
     rented: bool = False
     superior_category: str
     sub_category: str
-    tag: str
+    vehicle_key: str
 
 
 class UserSchema(BaseModel):
@@ -34,7 +34,7 @@ class UserSchema(BaseModel):
 
 
 class PointSchema(BaseModel):
-    key: str
+    point_key: str
     name: str
     users: list[UserSchema] = []
     vehicles: list[VehicleSchema] = []
@@ -44,7 +44,7 @@ class PointSchema(BaseModel):
 
 
 class PriceSchema(BaseModel):
-    category: str | list
+    superior_category: str | list
     day: int
     first_hour: Optional[int] = None
     half_hour: Optional[int] = None
@@ -56,7 +56,7 @@ class PriceSchema(BaseModel):
 
 
 class PrepaymentSchema(BaseModel):
-    tags: list
+    vehicle_keys: list
     day: Optional[bool]
     first_hour: Optional[bool]
     half_hour: Optional[bool]

@@ -48,27 +48,27 @@ def point_get_all(database: Session):
     return database.query(tables.Point).all()
 
 
-def point_get_by_key(key: str, database: Session):
-    return database.query(tables.Point).filter(tables.Point.key == key).first()
+def point_get_by_key(point_key: str, database: Session):
+    return database.query(tables.Point).filter(tables.Point.point_key == point_key).first()
 
 
 def vehicle_create(vehicle: schemas.VehicleSchema,
                    database: Session):
-    office = database.query(tables.Point).filter(tables.Point.key == "office").first()
+    office = database.query(tables.Point).filter(tables.Point.point_key == "office").first()
     new_vehicle = tables.Vehicle(**vehicle.dict(), rental_point=office)
     database.add(new_vehicle)
     database.commit()
 
 
-def vehicle_get_by_tag(tag: str, database: Session):
-    return database.query(tables.Vehicle).filter(tables.Vehicle.tag == tag).first()
+def vehicle_get_by_key(vehicle_key: str, database: Session):
+    return database.query(tables.Vehicle).filter(tables.Vehicle.vehicle_key == vehicle_key).first()
 
 
-def vehicle_move(tag: str,
-                 key: str,
+def vehicle_move(vehicle_key: str,
+                 point_key: str,
                  database: Session):
-    vehicle = vehicle_get_by_tag(tag, database)
-    point = point_get_by_key(key, database)
+    vehicle = vehicle_get_by_key(vehicle_key, database)
+    point = point_get_by_key(point_key, database)
     vehicle.rental_point = point
     database.add(vehicle)
     database.commit()

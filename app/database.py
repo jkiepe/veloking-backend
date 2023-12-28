@@ -35,7 +35,7 @@ def setup():
             data = get_json(table)
             for (number, item) in data[table].items():
                 if table == "points":
-                    point = schemas.PointSchema(key = item["key"], name = item["name"])
+                    point = schemas.PointSchema(point_key = item["point_key"], name = item["name"])
                     crud.point_create(point, db)
 
                 if table == "users":
@@ -48,9 +48,9 @@ def setup():
                     crud.user_create(user, db)
 
                 if table == "prices":
-                    if item["category"] == "bike":
+                    if item["superior_category"] == "bike":
                         price = schemas.PriceSchema(
-                            category = item["category"],
+                            superior_category = item["superior_category"],
                             day = item["day"],
                             first_hour = item["first_hour"],
                             hour = item["hour"],
@@ -58,7 +58,7 @@ def setup():
                         )
                     else:
                         price = schemas.PriceSchema(
-                            category = item["category"],
+                            superior_category = item["superior_category"],
                             day = item["day"],
                             half_hour = item["half_hour"],
                             hour = item["hour"],
@@ -69,7 +69,7 @@ def setup():
                     vehicle = schemas.VehicleSchema(
                             superior_category = item["superior_category"],
                             sub_category = item["sub_category"],
-                            tag = item["tag"],
+                            vehicle_key = item["vehicle_key"],
                         )
                     crud.vehicle_create(vehicle, db)
 

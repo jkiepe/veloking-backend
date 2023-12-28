@@ -1,21 +1,21 @@
 {
     "prices": [
         {
-            "category": "bike",
+            "superior_category": "bike",
             "day": 75,
             "first_hour": 18,
             "hour": 15,
             "per_24_hours": 85
         },
         {
-            "category": "single-gokart",
+            "superior_category": "single-gokart",
             "day": 200,
             "half_hour": 15,
             "hour": 20,
             "per_24_hours": 250
         },  
         {
-            "category": "double-gokart",
+            "superior_category": "double-gokart",
             "day": 300,
             "half_hour": 25,
             "hour": 30,

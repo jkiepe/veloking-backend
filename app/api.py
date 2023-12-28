@@ -71,10 +71,10 @@ async def user_get_myself(token: str = Depends(auth_bearer.JWTBearer()),
 
 @app.put("/user/point", tags=["user"])
 async def user_move_to_point(username: str,
-                             key: str,
+                             point_key: str,
                              db: Session = Depends(get_db)):
     user = crud.user_get_by_username(username, db)
-    point = crud.point_get_by_key(point_key, db)
+    point = crud.point_get_by_point_key(point_key, db)
     crud.user_move_to_point(user, point, db)
 
 @app.put("/price/create", tags=["price"])
@@ -85,7 +85,7 @@ async def price_create(price: schemas.PriceSchema, db: Session = Depends(get_db)
 @app.post("/point/create", tags=["point"])
 async def point_create(point: schemas.PointSchema,
                        db: Session = Depends(get_db)):
-    if crud.point_get_by_key(point.key, db):
+    if crud.point_get_by_point_key(point.point_key, db):
         raise HTTPException(status_code=400, detail="Point already registered")
     data.point_create(point, db)
 
@@ -94,7 +94,7 @@ async def point_create(point: schemas.PointSchema,
 async def point_list(db: Session = Depends(get_db)):
     points = crud.point_get_all(db)
     points = [{
-        "key": point.key,
+        "point_key": point.point_key,
        "name": point.name,
        } for point in points]
     return {"points": points}
@@ -112,16 +112,16 @@ async def vehicle_list(db: Session = Depends(get_db)):
     vehicles = [{
         "superior_category": vehicle.superior_category,
         "sub_category": vehicle.sub_category,
-        "tag": vehicle.tag,
+        "vehicle_key": vehicle.vehicle_key,
         "rented": vehicle.rented,
-        "rental_point": vehicle.rental_point.key
+        "rental_point": vehicle.rental_point.point_key
         } for vehicle in vehicles]
     return {"vehicles": vehicles}
 
 
 @app.get("/vehicle/move", tags=["vehicle"])
-async def vehicle_move(tag: str, key: str, db: Session = Depends(get_db)):
-    crud.vehicle_move(tag, key, db)
+async def vehicle_move(vehicle_key: str, point_key: str, db: Session = Depends(get_db)):
+    crud.vehicle_move(vehicle_key, point_key, db)
     
 
 # @app.post("/rental/create", tags=["rental"])

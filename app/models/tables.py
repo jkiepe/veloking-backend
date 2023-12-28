@@ -9,7 +9,7 @@ class Price(Table):
     __tablename__ = "prices"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    category: Mapped[str]
+    superior_category: Mapped[str]
     day: Mapped[int]
     first_hour: Mapped[Optional[int]]
     half_hour: Mapped[Optional[int]]
@@ -20,7 +20,7 @@ class Point(Table):
     __tablename__ = "rental_points"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    key: Mapped[str]
+    point_key: Mapped[str]
     name: Mapped[str]
     users: Mapped[List["User"]] = relationship(back_populates="rental_point")
     vehicles: Mapped[List["Vehicle"]] = relationship(back_populates="rental_point")
@@ -46,7 +46,7 @@ class Vehicle(Table):
     rented: Mapped[bool]
     superior_category: Mapped[str]
     sub_category: Mapped[str]
-    tag: Mapped[str]
+    vehicle_key: Mapped[str]
     rental_point_id = mapped_column(ForeignKey("rental_points.id"))
     rental_point: Mapped[Point] = relationship(back_populates="vehicles")
 
