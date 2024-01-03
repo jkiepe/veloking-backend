@@ -5,22 +5,22 @@
         {
             "superior_category": "bike",
             "sub_category": "adult-female-bike",
-            "vehicle_key": "FB-01",
+            "vehicle_key": "RD-01",
         },
         {
             "superior_category": "bike",
             "sub_category": "adult-male-bike",
-            "vehicle_key": "MB-01",
+            "vehicle_key": "RWM-01",
         },
         {
             "superior_category": "gokart",
             "sub_category": "adult-single-gokart",
-            "vehicle_key": "SG-01",
+            "vehicle_key": "G1-01",
         },
         {
             "superior_category": "gokart",
             "sub_category": "adult-double-gokart",
-            "vehicle_key": "DG-01",
+            "vehicle_key": "G2-1",
         }
     ]
 }
