@@ -37,19 +37,19 @@ async def user_login(login_data: schemas.LoginSchema, db: Session = Depends(get_
     if user:
         if user.disabled:
             raise HTTPException(status_code=400, detail="User is disabled")
-        if database.user_verify(login_data.password, user.password):
+        if crud.user_verify(login_data.password, user.password):
             return jwt_handler.encode(user.username)
     raise HTTPException(status_code=400, detail="Incorrect login details")
 
 
-@app.post("/user/create", tags=["user"])
+@app.post("/user/create", tags=["user"], dependencies=[Depends(auth_bearer.JWTBearer())])
 async def user_create(user: schemas.UserSchema, db: Session = Depends(get_db)):
     if crud.user_get_by_username(user.username, db):
         raise HTTPException(status_code=400, detail="Username already registered")
     crud.user_create(user, db)
 
 
-@app.get("/user/list", tags=["user"])
+@app.get("/user/list", tags=["user"], dependencies=[Depends(auth_bearer.JWTBearer())])
 async def user_list(db: Session = Depends(get_db)):
     users = crud.user_get_all(db)
     users = [user.fullname for user in users]
@@ -71,7 +71,7 @@ async def user_move_to_point(
     username: str, point_key: str, db: Session = Depends(get_db)
 ):
     user = crud.user_get_by_username(username, db)
-    point = crud.point_get_by_point_key(point_key, db)
+    point = crud.point_get_by_key(point_key, db)
     crud.user_move_to_point(user, point, db)
 
 
@@ -82,7 +82,7 @@ async def price_create(price: schemas.PriceSchema, db: Session = Depends(get_db)
 
 @app.post("/point/create", tags=["point"])
 async def point_create(point: schemas.PointSchema, db: Session = Depends(get_db)):
-    if crud.point_get_by_point_key(point.point_key, db):
+    if crud.point_get_by_key(point.point_key, db):
         raise HTTPException(status_code=400, detail="Point already registered")
     crud.point_create(point, db)
 

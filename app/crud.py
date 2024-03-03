@@ -31,7 +31,7 @@ def user_move_to_point(user: tables.User, point: tables.Point, database: Session
     database.commit()
 
 
-def price_create(price: tables.Price, database: Session):
+def price_create(price: schemas.PriceSchema, database: Session):
     new_price = tables.Price(**price.dict())
     database.add(new_price)
     database.commit()
