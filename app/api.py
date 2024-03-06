@@ -33,7 +33,7 @@ async def home():
 
 @app.post("/user/login", tags=["user"])
 async def user_login(login_data: schemas.LoginSchema, db: Session = Depends(get_db)):
-    user = crud.user_get_by_username(login_data.username, db)
+    user = crud.user_get_by_email(login_data.email, db)
     if user:
         if user.disabled:
             raise HTTPException(status_code=400, detail="User is disabled")

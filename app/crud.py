@@ -24,6 +24,8 @@ def user_get_all(database: Session):
 def user_get_by_username(username: str, database: Session):
     return database.query(tables.User).filter(tables.User.username == username).first()
 
+def user_get_by_email(email: str, database: Session):
+    return database.query(tables.User).filter(tables.User.email == email).first()
 
 def user_move_to_point(user: tables.User, point: tables.Point, database: Session):
     user.current_rental_id = point.id

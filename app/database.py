@@ -41,6 +41,7 @@ def setup():
                 if table == "users":
                     user = schemas.UserSchema(
                         username = item["username"],
+                        email = item["email"],
                         password = item["password"],
                         fullname = item["fullname"],
                     role = item["role"]

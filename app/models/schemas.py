@@ -3,13 +3,13 @@ from typing import Optional
 
 
 class LoginSchema(BaseModel):
-    username: str
+    email: str
     password: str
 
     class Config:
         json_schema_extra = {
             "example": {
-                "username": "admin",
+                "email": "admin@gmail.com",
                 "password": "admin",
             }
         }
@@ -24,6 +24,7 @@ class VehicleSchema(BaseModel):
 
 class UserSchema(BaseModel):
     username: str
+    email: str
     password: str
     fullname: str
     disabled: bool = True

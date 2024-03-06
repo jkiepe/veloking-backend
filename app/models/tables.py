@@ -31,6 +31,7 @@ class User(Table):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str]
+    email: Mapped[str]
     password: Mapped[str]
     fullname: Mapped[str]
     disabled: Mapped[bool]
@@ -91,7 +92,7 @@ class Vehicle(Table):
 #     streetAndNumber: Mapped[str]
 #     idNumber: Mapped[str]
 #     addressSelected: Mapped[bool]
-#     email: Mapped[str]
+#     username: Mapped[str]
 #     country: Mapped[str]
 #     countryCode: Mapped[str]
 

@@ -3,6 +3,7 @@
     [
         {
             "username": "admin",
+            "email": "admin@gmail.com",
             "password": "admin",
             "fullname": "adminadmin",
             "role": "admin"
